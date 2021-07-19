@@ -31,9 +31,3 @@ function moveTaskTonextPerson(tasks, persons){
 }
 
 assignTaskToPerson(tasks, persons);
-
-
-
-
-
-

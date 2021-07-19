@@ -1,23 +1,38 @@
 const express = require('express')
+const mysql = require("mysql2");
+const cors  = require("cors");
+require('dotenv').config()
+const bodyParser = require('body-parser');
+
+
+
 const app = express()
 const port = 3001
+
+app.use(bodyParser.json())
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.post("/createweeklyassigner", (req, res) => {
-    /*/ 
-    props from website to db
-    db.query
+const db = mysql.createConnection({
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    password: process.env.DB_PASS,
+    database: process.env.DB_DATABASE
+});
 
-    ///template///
-    const user = req.body.user;
-    const pass = req.body.pass;
-    
+
+app.post("/createweeklyassigner", (req, res) => {
+    const name = req.body.name
+    console.log(req.body)
+    const taskAssigned = req.body.taskAssigned
+    const position = req.body.position
+
     db.query(
-        "INSERT INTO `users` (`username`, `name`,) VALUES (?,?);",
-        [user, pass],
+        "INSERT INTO `Persons` (`Name`, `TaskAssigned`, `Position`) VALUES (?, ?, ?);",
+        [name, taskAssigned, position],
         (err, result) => {
             if(err) {
                 console.log(err)
@@ -26,9 +41,6 @@ app.post("/createweeklyassigner", (req, res) => {
             }
         }
     );
-    ///template///
-
-    /*/
 });
 
 
